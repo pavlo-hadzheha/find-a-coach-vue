@@ -1,6 +1,6 @@
 <template>
-   <div class="container m-auto">
-      <h1 v-if="title" class="font-sans font-bold text-white text-2xl mb-4">{{title}}</h1>
+   <div class="container m-auto max-w-screen-md">
+      <h1 v-if="title" class="mb-4 font-sans text-2xl font-bold text-white">{{title}}</h1>
       <div class="p-6 bg-white rounded-lg shadow-lg duration-200">
          <slot></slot>
       </div>

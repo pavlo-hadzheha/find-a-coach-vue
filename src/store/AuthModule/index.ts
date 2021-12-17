@@ -1,24 +1,22 @@
-import {ActionContext} from 'vuex'
-import axios from 'axios';
-import fb from '@/firebase';
-import { UserCredential } from 'firebase/auth';
-import {
-  createUserWithEmailAndPassword
-} from 'firebase/auth';
-import {ICoachRequest, ICoachResponse} from '@/data-structures/coach';
+import actions from './actions';
+import mutations from './mutations';
+import getters from './getters';
+import {AuthStore} from '@/data-structures/auth';
+import {RootStore} from '@/data-structures/store-state.inteface';
+import {Module} from 'vuex';
 
 export default {
-  actions: {
-    async emailSignUp(
-      ctx: ActionContext<any, any>, 
-      payload: {coach: ICoachRequest,
-                password: string, 
-                email: string}): Promise<void> {
-      const credential: UserCredential = await createUserWithEmailAndPassword(fb.auth, payload.email, payload.password);
-      return await axios.post(fb.API.requests, {
-          UID: credential.user.uid,
-          ...payload.coach,
-        });
+  namespaced: true,
+  state(): AuthStore {
+    return {
+      token: '',
+      userUID: '',
+      expirationDate: '',
+      userIsAuthenticated: false,
+      activeUser: null
     }
-  }
+  },
+  mutations: mutations,
+  actions: actions,
+  getters: getters
 }

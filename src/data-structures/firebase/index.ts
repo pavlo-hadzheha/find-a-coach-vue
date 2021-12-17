@@ -1,13 +1,10 @@
-import { Auth } from "firebase/auth";
-import { Firestore } from "firebase/firestore";
-
-export  interface Firebase {
-  db: Firestore;
-  auth: Auth;
+export interface Firebase {
   API: {
-    coaches: string;
-    requests: string;
+    auth: {
+      signIn: string;
+      signUp: string;
+    };
+    users: (path?: string) => string;
+    messages: (path?: string) => string;
   }
 }
-
-

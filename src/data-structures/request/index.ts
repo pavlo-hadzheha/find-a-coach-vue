@@ -1,20 +1,12 @@
-export interface IRequest {
-  UID?: string
+export interface IMessage {
   coachUID: string;
+  userUID: string;
+  recordID?: string;
+  title: string;
   message: string;
-  senderEmail: string;
+  timestamp: string;
 }
 
-export default class Request implements IRequest {
-  public UID!: string;
-  public coachUID: string;
-  public message: string;
-  public senderEmail: string;
-  
-  constructor( {UID, coachUID, message, senderEmail}: IRequest) { 
-    if(UID) this.UID = UID;
-    this.coachUID = coachUID;
-    this.message = message;
-    this.senderEmail = senderEmail;
-  }
+export interface MessageStore {
+  messages: Array<IMessage>;
 }

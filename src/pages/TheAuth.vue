@@ -11,7 +11,6 @@ export default defineComponent({
   computed: {
     caption(): string {
       let routeName = this.$route.name;
-      console.log(this.$store)
       return routeName === 'Register' ? 'Register' : 'Login';
     } 
   }

@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
-import CoachModule from './CoachModule';
-import RequestModule from './RequestModule';
+import AuthModule from './AuthModule';
+import MessageModule from './MessageModule';
+import UserModule from './UserModule';
 
 
 export default createStore({
   modules: {
-    CoachModule,
-    RequestModule
+    auth: AuthModule,
+    messages: MessageModule,
+    users: UserModule
   }
 });

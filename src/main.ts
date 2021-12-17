@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import 'element-plus/dist/index.css';
 import '@/assets/tailwind.css';
+import {Message, User, UserFilled} from '@element-plus/icons-vue';
 
 import {
   ElButton,
@@ -14,6 +15,11 @@ import {
   ElCol,
   ElSelect,
   ElOption,
+  ElCard,
+  ElIcon,
+  ElTag,
+  ElCheckboxButton,
+  ElDialog,
 } from 'element-plus';
 
 import TheHeader from '@/components/layout/TheHeader.vue';
@@ -44,6 +50,15 @@ app.use(ElRow);
 app.use(ElCol);
 app.use(ElSelect);
 app.use(ElOption);
+app.use(ElIcon);
+app.use(ElCard);
+app.use(ElTag);
+app.use(ElCheckboxButton);
+app.component('message-icon', Message);
+app.component('user-icon', UserFilled);
+
+app.use(ElDialog);
+
 
 // UI
 app.component('base-container', BaseContainer);

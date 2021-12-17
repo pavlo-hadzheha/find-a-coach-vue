@@ -1,6 +1,3 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { Firebase } from '@/data-structures/firebase';
 
 const firebaseConfig = {
@@ -13,14 +10,30 @@ const firebaseConfig = {
   appId: "1:542227284121:web:7060a2a4058b1d51687808"
 };
 
-const app = initializeApp(firebaseConfig);
+function normalizedPath(path?: string): string {
+  if(!path) return '';
+  path = path.trim();
+  path = path.endsWith('/') ? path.slice(0,-1) : path;
+  path = path.startsWith('/') ? path.slice(1) : path;
+  console.log('path',path)
+  return path;
+}
 
 export default {
-  db: getFirestore(),
-  auth: getAuth(),
   API: {
-    coaches: 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/coaches.json',
-    requests: 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/requests.json'
+    auth: {
+      signIn: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseConfig.apiKey}`,
+      signUp: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`
+    },
+      users(path = ''): string {
+        const url = 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/users';
+        return `${url}${path ? '/' : ''}${normalizedPath(path)}.json`;
+      },
+      messages(path = ''): string {
+        const url = 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/messages';
+        console.log('normalizedPath', normalizedPath(path));
+        return `${url}${path ? '/' : ''}${normalizedPath(path)}.json`;
+      }
   }
 } as Firebase
 
