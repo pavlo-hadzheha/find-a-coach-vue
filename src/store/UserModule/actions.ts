@@ -33,11 +33,6 @@ export default {
         auth: token
       };
       const response = await axios.patch(fb.API.users(user.recordID), user, {params: query});
-      if(response.statusText === 'OK' && response.status === 200) {
-        ctx.dispatch('auth/setActiveUser', user, {root: true});
-      } else {
-        throw new Error('Could not update your data')
-      }
     } catch(err) {
       throw new Error('Could not update your data')
     }

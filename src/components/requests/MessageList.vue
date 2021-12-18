@@ -1,6 +1,11 @@
 <template>
   <base-container plain="false" class="mb-4">
-    <h1 class="text-2xl font-bold text-blue-400">Conversation with {{notMyName}}</h1>
+    <h1 class="text-2xl font-bold text-blue-400 flex justify-between">
+      <span>Conversation with {{notMyName}} </span>
+      <el-button type="success" circle @click="getDialog">
+        <el-icon><refresh-icon /></el-icon>
+      </el-button>
+    </h1>
   </base-container>
   <base-container id="reply" class="mb-4">
     <el-form label-width="70px" :model="form" ref="requestForm" :rules="rules">

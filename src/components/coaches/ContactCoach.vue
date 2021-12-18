@@ -82,10 +82,11 @@ export default defineComponent({
         timestamp: Date.now().toString()
       };
       try {
+        let other = await this.$store.dispatch('users/getUser', this.id);
         await this.$store.dispatch('messages/sendMessage', {
           message: newMessage,
           from: user,
-          to: await this.$store.dispatch('users/getUser', this.id)
+          to: other
         });
         this.showSuccess('Sent!')
       } catch(err: unknown) {

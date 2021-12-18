@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import 'element-plus/dist/index.css';
 import '@/assets/tailwind.css';
-import {Message, User, UserFilled} from '@element-plus/icons-vue';
+import {Message, Refresh, User, UserFilled} from '@element-plus/icons-vue';
 
 import {
   ElButton,
@@ -56,6 +56,7 @@ app.use(ElTag);
 app.use(ElCheckboxButton);
 app.component('message-icon', Message);
 app.component('user-icon', UserFilled);
+app.component('refresh-icon', Refresh);
 
 app.use(ElDialog);
 

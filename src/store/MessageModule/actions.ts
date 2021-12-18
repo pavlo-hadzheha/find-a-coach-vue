@@ -55,12 +55,20 @@ export default {
       try {
         const token = ctx.rootState.auth.token;
         const dialogExists = payload.from.dialogs && payload.from.dialogs.some(d => d.receiverUID === payload.to.UID);
+        console.log('dialogExists', dialogExists)
         if(dialogExists) {
           const dialogUID = payload.from.dialogs?.find(d => d.receiverUID === payload.to.UID)?.dialogUID;
+          console.log('dialogUID yes', dialogUID)
           const dialog = await ctx.dispatch('getDialog', dialogUID);
+          console.log('dialog yes', dialog)
           dialog.messages.push(payload.message);
           const url = fb.API.dialogs(`${dialogUID}/messages`);
-          await axios.put(url, dialog.messages, {params: {auth: token}});
+          console.log('url yes', url);
+          try {
+            await axios.put(url, dialog.messages, {params: {auth: token}});
+          } catch(err) {
+            console.dir(err)
+          }
         } else {
           const newDialog: IDialog = {
             user1: payload.from,
@@ -71,13 +79,9 @@ export default {
           const dialogUID = response.data.name;
           const updatedFrom = payload.from;
           const updatedTo = payload.to;
-          if(updatedFrom.dialogs && updatedTo.dialogs) {
+          if(updatedTo.dialogs) {
             updatedTo.dialogs.push({
               receiverUID: updatedFrom.UID,
-              dialogUID: dialogUID
-            });
-            updatedFrom.dialogs.push({
-              receiverUID: updatedTo.UID,
               dialogUID: dialogUID
             });
           } else {
@@ -85,6 +89,13 @@ export default {
               receiverUID: updatedFrom.UID,
               dialogUID: dialogUID
             }];
+          }
+          if(updatedFrom.dialogs) {
+            updatedFrom.dialogs.push({
+              receiverUID: updatedTo.UID,
+              dialogUID: dialogUID
+            });
+          } else {
             updatedFrom.dialogs = [{
               receiverUID: updatedTo.UID,
               dialogUID: dialogUID

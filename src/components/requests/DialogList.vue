@@ -3,6 +3,7 @@
     v-for="dialog of dialogs"
     :key="dialog.recordID"
     :dialog="dialog"
+    class="mb-4"
     ></dialog-item>
 </template>
 
