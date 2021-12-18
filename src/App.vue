@@ -12,6 +12,9 @@ export default defineComponent({
   async created(): Promise<void> {
     await this.$store.dispatch('users/set');
     await this.$store.dispatch('auth/autoLogin');
+    if(this.$store.getters['auth/userIsAuthenticated']) {
+      await this.$store.dispatch('messages/getDialogs');
+    }
   }
 })
 </script>

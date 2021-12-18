@@ -1,36 +1,99 @@
-import {IMessage, MessageStore} from "@/data-structures/request";
+import {IDialog, IMessage, MessageStore} from "@/data-structures/request";
+import {IUser} from "@/data-structures/user";
 import fb from "@/firebase";
 import {toArray} from "@/utils/dataWrangle";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import {ActionContext} from "vuex";
 
 export default {
-  async getMessages(ctx: ActionContext<MessageStore, any>): Promise<void> {
+  async getDialogs(ctx: ActionContext<MessageStore, any>): Promise<IDialog[] | void> {
     if(ctx.rootState.auth.userIsAuthenticated) {
       try {
-        const { token, userUID } = ctx.rootState.auth;
-        const query = {
-          auth: token,
-          userUID: userUID,
-        };
-        const response = await axios.get<IMessage[]>(fb.API.messages(), {params: query});
-        console.log(response)
-        ctx.commit('set', toArray(response.data, 'recordID'));
+        const { token, activeUser } = ctx.rootState.auth;
+        const dialogUIDs = (activeUser as IUser)?.dialogs?.map(d => d.dialogUID);
+        const dialogs: IDialog[] = [];
+        if(dialogUIDs) {
+          for(const dialogUID of dialogUIDs) {
+            const dialog: IDialog = await ctx.dispatch('getDialog', dialogUID);
+            dialogs.push(dialog);
+          }
+          ctx.commit('set', dialogs);
+          dialogs.sort((a, b) => {
+            const timestampsA: number[] = a.messages.map(m => +m.timestamp);
+            const timestampsB: number[] = b.messages.map(m => +m.timestamp);
+            const latestA = Math.max(...timestampsA);
+            const latestB = Math.max(...timestampsB);
+            if(latestA > latestB) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          return dialogs;
+        }
       } catch(err) {
-        console.dir(err);
         throw new Error( 'Could get the messages list');
       }
     }
   },
-  async sendMessage(ctx: ActionContext<MessageStore, any>, message: IMessage): Promise<void> {
+  async getDialog(ctx: ActionContext<MessageStore, any>, dialogUID: string): Promise<IDialog | void> {
+    if(ctx.rootState.auth.userIsAuthenticated) {
+      try {
+        const { token } = ctx.rootState.auth;
+        const response = await axios.get<IDialog>(fb.API.dialogs(dialogUID), {params: {auth: token}});
+        const dialog = response.data;
+        dialog.recordID = dialogUID;
+        dialog.messages.sort((a, b) => +b.timestamp - +a.timestamp);
+        return response.data;
+      } catch(err) {
+        throw new Error( `Could get the dialog (${dialogUID})`);
+      }
+    }
+  },
+  async sendMessage(ctx: ActionContext<MessageStore, any>, payload: {message: IMessage, from: IUser, to: IUser}): Promise<void> {
     if(ctx.rootState.auth.userIsAuthenticated) {
       try {
         const token = ctx.rootState.auth.token;
-        await axios.post(fb.API.messages(), message, {params: {auth: token}});
-        await ctx.dispatch('getMessages');
-        console.log('messages =>', ctx.getters)
+        const dialogExists = payload.from.dialogs && payload.from.dialogs.some(d => d.receiverUID === payload.to.UID);
+        if(dialogExists) {
+          const dialogUID = payload.from.dialogs?.find(d => d.receiverUID === payload.to.UID)?.dialogUID;
+          const dialog = await ctx.dispatch('getDialog', dialogUID);
+          dialog.messages.push(payload.message);
+          const url = fb.API.dialogs(`${dialogUID}/messages`);
+          await axios.put(url, dialog.messages, {params: {auth: token}});
+        } else {
+          const newDialog: IDialog = {
+            user1: payload.from,
+            user2: payload.to,
+            messages: [payload.message]
+          };
+          const response = await axios.post(fb.API.dialogs(), newDialog, {params: {auth: token}});
+          const dialogUID = response.data.name;
+          const updatedFrom = payload.from;
+          const updatedTo = payload.to;
+          if(updatedFrom.dialogs && updatedTo.dialogs) {
+            updatedTo.dialogs.push({
+              receiverUID: updatedFrom.UID,
+              dialogUID: dialogUID
+            });
+            updatedFrom.dialogs.push({
+              receiverUID: updatedTo.UID,
+              dialogUID: dialogUID
+            });
+          } else {
+            updatedTo.dialogs = [{
+              receiverUID: updatedFrom.UID,
+              dialogUID: dialogUID
+            }];
+            updatedFrom.dialogs = [{
+              receiverUID: updatedTo.UID,
+              dialogUID: dialogUID
+            }];
+          }
+          await ctx.dispatch('users/updateUser', updatedTo, {root: true});
+          await ctx.dispatch('users/updateUser', updatedFrom, {root: true});
+        }
       } catch(err) {
-        console.dir(err);
         throw new Error( 'Could send the message. Try later');
       }
     }

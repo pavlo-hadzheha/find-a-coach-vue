@@ -10,7 +10,7 @@
         <el-button class="nav-item-btn" type="text" round>Coaches</el-button>
       </router-link>
       <router-link to="/requests" class="relative nav-item" v-if="loggedIn">
-        <el-button class="nav-item-btn" type="text">Requests</el-button>
+        <el-button class="nav-item-btn" type="text">Dialogs</el-button>
       </router-link>
       <template v-if="!loggedIn">
         <router-link to="/auth/login" class="relative nav-item">

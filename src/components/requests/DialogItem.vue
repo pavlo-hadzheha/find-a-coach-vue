@@ -1,18 +1,18 @@
 <template>
-  <base-container :id="coachUID">
-    <div v-if="coach" class="flex justify-between items-center">
+  <base-container :id="'ID' + coachUID">
+    <div class="flex items-center justify-between">
       <div class="dialogData">
         <h4 class="font-bold text-blue-500 text-md">
-          {{coach.firstName + ' ' + coach.lastName}}
-          <span>[{{lastMessageDate}}]</span>
+          Conversation with {{notMyName}}
+          <span class="text-sm text-blue-300">[last {{lastMessageDate}}]</span>
         </h4>
         <div v-if="dialog">
-          <h5>{{lastMessage.title}}</h5>
-          <p>{{lastMessage.message.slice(0,20)}}...</p>
+          <h5><span class="font-bold">{{lastMessageFromMe ? 'Me' : notMyName}}</span>: {{lastMessage.title}}</h5>
+          <p><span class="font-bold">Message</span>: {{lastMessage.length > 20 ? lastMessage.message.slice(0,20): lastMessage.message}}...</p>
         </div>
       </div>
       <div class="actions">
-        <router-link :to="'/requests/' + coachUID">
+        <router-link :to="'/requests/' + dialog.recordID">
           <el-button type="primary" plain>View history</el-button>
         </router-link>
       </div>
@@ -21,29 +21,33 @@
 </template>
 
 <script lang="ts">
-import { IMessage } from '@/data-structures/request'
+import { IDialog, IMessage } from '@/data-structures/request'
 import { IUser } from '@/data-structures/user';
-import { ElLoading } from 'element-plus';
 import { defineComponent, PropType } from 'vue'
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
-  data() {
-    return {
-      coach: null as null | IUser
-    }
-  },
   props: {
     dialog: {
       required: true,
-      type: Object as PropType<IMessage[]>
+      type: Object as PropType<IDialog>
     }
   },
   computed: {
-    coachUID(): string {
-      return this.dialog[0].coachUID;
-    },
+    ... mapGetters({activeUser: 'auth/activeUser'}),
     lastMessage(): IMessage {
-      return this.dialog[0];
+      return this.dialog.messages[0];
+    },
+    notMyName(): string {
+      return this.notMe.firstName + ' ' + this.notMe.lastName;
+    },
+    notMe(): IUser {
+      return this.dialog.user1.UID === this.activeUser.UID 
+        ? this.dialog.user2
+        : this.dialog.user1;
+    },
+    lastMessageFromMe(): boolean {
+      return this.lastMessage.senderUID === this.activeUser.UID;
     },
     lastMessageDate(): string {
       const date =  new Date(+this.lastMessage.timestamp);
@@ -55,12 +59,6 @@ export default defineComponent({
       return `${monthDay}.${month}.${year} - ${hours}:${minutes}`;
     }
   },
-  async mounted(): Promise<void> {
-    const loadingInstance = ElLoading.service({target: `#${this.coachUID}`});
-    this.coach = await this.$store.dispatch('users/getUser', this.coachUID);
-    loadingInstance.close();
-  }
-
 })
 </script>
 

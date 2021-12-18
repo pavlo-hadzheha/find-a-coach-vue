@@ -1,7 +1,7 @@
 <template>
   <dialog-item
     v-for="dialog of dialogs"
-    :key="dialog[0].coachUID"
+    :key="dialog.recordID"
     :dialog="dialog"
     ></dialog-item>
 </template>
@@ -12,7 +12,7 @@ import DialogItem from './DialogItem.vue';
 
 export default defineComponent({
   props: ['dialogs'],
-  components: {DialogItem}
+  components: {DialogItem},
 })
 </script>
 

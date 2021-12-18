@@ -6,5 +6,6 @@ export interface Firebase {
     };
     users: (path?: string) => string;
     messages: (path?: string) => string;
+    dialogs: (path?: string) => string;
   }
 }

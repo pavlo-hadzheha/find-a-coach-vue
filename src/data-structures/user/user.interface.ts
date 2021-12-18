@@ -1,3 +1,4 @@
+import {DialogMeta} from '../request';
 import CoachData from './coach-data.interface';
 
 export interface IUser {
@@ -8,4 +9,5 @@ export interface IUser {
   email: string;
   isCoach: boolean;
   coachData: null | CoachData;
+  dialogs?: DialogMeta[]
 }

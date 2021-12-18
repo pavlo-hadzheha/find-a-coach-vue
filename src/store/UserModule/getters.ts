@@ -1,6 +1,9 @@
 import {UserStore, IUser} from "@/data-structures/user"
 
 export default {
+  users(state: UserStore): IUser[] {
+    return state.users;
+  },
   coaches(state: UserStore, _: any, __: any, rootGetters: any): Array<IUser> {
     return state.users.filter(u => {
       if(rootGetters['auth/userIsAuthenticated']) {

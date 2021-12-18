@@ -42,7 +42,7 @@ export default {
         ls.set('userData', userData);
         ctx.commit('login');
         ctx.commit('authenticate', userData);
-        const user = await ctx.dispatch('users/getUser',{}, {root: true});
+        const user = await ctx.dispatch('users/getUser', userData.userUID, {root: true});
         ctx.dispatch('setActiveUser', user);
       } catch(err) {
         throw new Error('Unauthorized action. Need a token');
@@ -77,7 +77,7 @@ export default {
       ls.set('userData', userData);
       ctx.commit('authenticate', userData);
       ctx.commit('login');
-      const user = await ctx.dispatch('users/getUser',{}, {root: true});
+      const user = await ctx.dispatch('users/getUser', userData.userUID, {root: true});
       ctx.dispatch('setActiveUser', user);
     } else {
       throw new Error('Something went wrong. Try again later');
@@ -99,7 +99,7 @@ export default {
       if(diff > 0) {
         ctx.commit('login');
         ctx.commit('authenticate', userData);
-        const user = await ctx.dispatch('users/getUser',{}, {root: true});
+        const user = await ctx.dispatch('users/getUser', userData.userUID, {root: true});
         ctx.dispatch('setActiveUser', user);
       } else {
         ctx.dispatch('logout');

@@ -234,13 +234,13 @@ export default defineComponent({
     },
     async getUser(): Promise<void> {
       let userUID = this.$store.getters['auth/userID'];
-      await this.$store.dispatch('users/getUser', userUID)
-      this.activeUser = this.$store.getters['auth/activeUser'];
+      this.activeUser = await this.$store.dispatch('users/getUser', userUID)
       this.initForm();
     },
   },
-  async created() {
+  async mounted() {
     const loadingInstance = ElLoading.service({body: true})
+    this.$store.dispatch('auth/autoLogin');
     await this.getUser()
     loadingInstance.close();
   }

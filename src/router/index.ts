@@ -3,6 +3,7 @@ import { TheRequests, TheCoaches, TheAuth, TheCoachDetails } from '@/pages';
 import { RegisterForm, LoginForm, UserProfile } from '@/components/auth';
 import ContactCoach from '@/components/coaches/ContactCoach.vue';
 import MessageList from '@/components/requests/MessageList.vue';
+import store from '../store';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,7 +17,7 @@ const routes: Array<RouteRecordRaw> = [
     component: TheRequests
   },
   {
-    path: '/requests/:coachUID',
+    path: '/requests/:dialogUID',
     name: 'MessageHistory',
     props: true,
     component: MessageList
@@ -56,9 +57,23 @@ const routes: Array<RouteRecordRaw> = [
   },
 ]
 
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach(function(to: any, from: any, next: any) {
+  console.log(to, from);
+  if(!store.getters['auth/userIsAuthenticated']) {
+    if(to.name === 'TheRequests' || to.name === 'UserProfile') {
+      next('/coaches');
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

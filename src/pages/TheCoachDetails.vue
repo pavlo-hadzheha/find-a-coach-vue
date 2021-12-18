@@ -13,7 +13,7 @@
           <router-link :to="contactLink" v-if="!isContactPage && userIsAuthenticated">
             <el-button type="success" round>Contact</el-button>
           </router-link>
-          <router-link to="/aut/login" v-else-if="!userIsAuthenticated">
+          <router-link to="/auth/login" v-else-if="!userIsAuthenticated">
             <el-button type="success" round>Login</el-button>
           </router-link>
           <router-link :to="closeLink" v-else>

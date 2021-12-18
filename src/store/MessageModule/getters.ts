@@ -1,4 +1,4 @@
-import {IMessage, MessageStore} from "@/data-structures/request";
+import {IDialog, IMessage, MessageStore} from "@/data-structures/request";
 
 function groupBy<T>(arr: T[], key: keyof T): T[][] {
   const uniqueValues = new Set(arr.map(e => e[key]));
@@ -10,10 +10,7 @@ function groupBy<T>(arr: T[], key: keyof T): T[][] {
 }
 
 export default {
-  messages(state: MessageStore): IMessage[] {
-    return state.messages;
+  dialogs(state: MessageStore): IDialog[] {
+    return state.dialogs;
   },
-  dialogs(state: MessageStore): IMessage[][] {
-    return groupBy(state.messages, 'coachUID');
-  }
 }

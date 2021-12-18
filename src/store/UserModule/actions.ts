@@ -7,11 +7,7 @@ import {toArray} from '@/utils/dataWrangle';
 export default {
   async set({commit}: {commit: Commit}): Promise<void> {
     try {
-      await axios.get<IUser[]>(fb.API.users(), {
-        params: {
-          isCoach: true
-        }
-      }).then(response => {
+      await axios.get<IUser[]>(fb.API.users()).then(response => {
         if(response.data) {
           commit('set', toArray(response.data, 'recordID'));
         }  
@@ -20,17 +16,14 @@ export default {
       throw new Error('Could not get the data');
     }
   },
-  async getUser(ctx: ActionContext<UserStore, any>, userUID: string): Promise<IUser | never> {
-    try {
-      const response = await axios.get<IUser[]>(fb.API.users(), {params: { UID: userUID }});
-      if(response.statusText === 'OK' && response.status === 200) {
-        const user = toArray(response.data, 'recordID')[0] as IUser;
-        return user;
-      } else {
-        throw new Error('Could not get your data. Try later')
-      }
-    } catch {
-      throw new Error('Could not get your data. Try later')
+  async getUser(ctx: ActionContext<UserStore, any>, userUID: string): Promise<IUser | null> {
+    await ctx.dispatch('set');
+    const users = ctx.rootGetters['users/users'] as IUser[];
+    const chosen = users.find(user => user.UID === userUID) as IUser;
+    if(chosen) {
+      return chosen;
+    } else {
+      return null
     }
   },
   async updateUser(ctx: ActionContext<UserStore, any>, user: IUser): Promise<void> {

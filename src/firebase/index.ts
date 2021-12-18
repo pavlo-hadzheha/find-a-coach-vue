@@ -15,7 +15,6 @@ function normalizedPath(path?: string): string {
   path = path.trim();
   path = path.endsWith('/') ? path.slice(0,-1) : path;
   path = path.startsWith('/') ? path.slice(1) : path;
-  console.log('path',path)
   return path;
 }
 
@@ -31,7 +30,10 @@ export default {
       },
       messages(path = ''): string {
         const url = 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/messages';
-        console.log('normalizedPath', normalizedPath(path));
+        return `${url}${path ? '/' : ''}${normalizedPath(path)}.json`;
+      },
+      dialogs(path = ''): string {
+        const url = 'https://vue-course-346d6-default-rtdb.europe-west1.firebasedatabase.app/dialogs';
         return `${url}${path ? '/' : ''}${normalizedPath(path)}.json`;
       }
   }

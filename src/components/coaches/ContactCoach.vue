@@ -74,20 +74,23 @@ export default defineComponent({
   methods: {
     async sendMessage(): Promise<void> {
       let user: IUser = this.$store.getters['auth/activeUser'];
-      const message: IMessage = {
-        coachUID: this.id,
-        userUID: user.UID,
+      const newMessage: IMessage = {
+        senderUID: user.UID,
+        receiverUID: this.id,
         title: this.form.title,
         message: this.form.message,
         timestamp: Date.now().toString()
       };
       try {
-        await this.$store.dispatch('messages/sendMessage', message);
+        await this.$store.dispatch('messages/sendMessage', {
+          message: newMessage,
+          from: user,
+          to: await this.$store.dispatch('users/getUser', this.id)
+        });
         this.showSuccess('Sent!')
       } catch(err: unknown) {
         this.showError((err as Error).message);
       }
-
     }
   }
 })
