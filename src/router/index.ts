@@ -64,7 +64,6 @@ const router = createRouter({
 })
 
 router.beforeEach(function(to: any, from: any, next: any) {
-  console.log(to, from);
   if(!store.getters['auth/userIsAuthenticated']) {
     if(to.name === 'TheRequests' || to.name === 'UserProfile') {
       next('/coaches');

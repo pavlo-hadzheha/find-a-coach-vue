@@ -21,15 +21,11 @@ export default defineComponent({
   },
   methods: {
     ... mapActions({getDialogs: 'messages/getDialogs'}),
-    showDialogs(): void {
-      console.log(this.dialogs)
-    }
   },
   
   async mounted(): Promise<void> {
     const loadingInstance = ElLoading.service({target: '#dialogs'});
     this.dialogs = await this.getDialogs()
-    console.log('dialogs received', this.dialogs);
     loadingInstance.close();
   },
 })

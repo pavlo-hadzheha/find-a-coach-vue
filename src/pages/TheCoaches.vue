@@ -35,8 +35,13 @@ export default defineComponent({
     filteredCoaches(): Array<IUser> | null {
       let coachList = this.$store.getters['users/coaches'];
       return coachList.filter((c: IUser) => {
-        let coachSkills = (c.coachData as CoachData).skills.map((c:  ICoachSkill) => c.skill);
-        return this.checkedSkills.every(s => coachSkills.includes(s));
+        let coachSkills = (c.coachData as CoachData).skills;
+        if(coachSkills) {
+          const mappedCoachSkills = coachSkills.map((c:  ICoachSkill) => c.skill);
+          return this.checkedSkills.every(s => mappedCoachSkills.includes(s));
+        } else {
+          return false;
+        }
       });
     }
   },

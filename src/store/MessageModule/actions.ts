@@ -55,19 +55,15 @@ export default {
       try {
         const token = ctx.rootState.auth.token;
         const dialogExists = payload.from.dialogs && payload.from.dialogs.some(d => d.receiverUID === payload.to.UID);
-        console.log('dialogExists', dialogExists)
         if(dialogExists) {
           const dialogUID = payload.from.dialogs?.find(d => d.receiverUID === payload.to.UID)?.dialogUID;
-          console.log('dialogUID yes', dialogUID)
           const dialog = await ctx.dispatch('getDialog', dialogUID);
-          console.log('dialog yes', dialog)
           dialog.messages.push(payload.message);
           const url = fb.API.dialogs(`${dialogUID}/messages`);
-          console.log('url yes', url);
           try {
             await axios.put(url, dialog.messages, {params: {auth: token}});
           } catch(err) {
-            console.dir(err)
+            throw new Error('Could not send the message');
           }
         } else {
           const newDialog: IDialog = {
