@@ -1,4 +1,4 @@
-import {IDialog, IMessage, MessageStore} from "@/data-structures/request";
+import {IDialog, IMessage, MessageStore} from "@/data-structures/dialog";
 import {IUser} from "@/data-structures/user";
 import fb from "@/firebase";
 import {toArray} from "@/utils/dataWrangle";

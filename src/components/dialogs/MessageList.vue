@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { IDialog, IMessage } from '@/data-structures/request';
+import { IDialog, IMessage } from '@/data-structures/dialog';
 import { IUser } from '@/data-structures/user';
 import { ElLoading, ElMessage } from 'element-plus';
 import { defineComponent } from 'vue'
@@ -95,7 +95,7 @@ export default defineComponent({
   computed: {
     ... mapGetters({activeUser: 'auth/activeUser', dialogs: 'messages/dialogs'}),
     notMe(): IUser {
-      return (this.dialog?.user1.UID === this.activeUser?.UID 
+      return (this.dialog?.user1.UID === this.activeUser?.UID
         ? this.dialog?.user2
         : this.dialog?.user1) as IUser;
     },

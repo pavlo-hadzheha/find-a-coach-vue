@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { TheRequests, TheCoaches, TheAuth, TheCoachDetails } from '@/pages';
 import { RegisterForm, LoginForm, UserProfile } from '@/components/auth';
 import ContactCoach from '@/components/coaches/ContactCoach.vue';
-import MessageList from '@/components/requests/MessageList.vue';
+import MessageList from '@/components/dialogs/MessageList.vue';
 import store from '../store';
 
 const routes: Array<RouteRecordRaw> = [
@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/coaches/:id',
     name: 'TheCoachDetails',
     component: TheCoachDetails,
-    props: true, 
+    props: true,
     children: [
       {
         path: 'contact',

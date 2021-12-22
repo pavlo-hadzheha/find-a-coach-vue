@@ -1,4 +1,4 @@
-import {IDialog, MessageStore} from "@/data-structures/request";
+import {IDialog, MessageStore} from "@/data-structures/dialog";
 
 export default {
   set(state: MessageStore, dialogs: IDialog[]): void {

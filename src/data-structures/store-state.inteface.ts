@@ -1,5 +1,5 @@
 import {AuthStore} from "./auth";
-import {MessageStore} from "./request";
+import {MessageStore} from "./dialog";
 import {UserStore} from "./user";
 
 export interface RootStore {

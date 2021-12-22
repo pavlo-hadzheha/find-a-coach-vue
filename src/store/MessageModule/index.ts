@@ -1,4 +1,4 @@
-import { IDialog, IMessage, MessageStore } from '@/data-structures/request';
+import { IDialog, IMessage, MessageStore } from '@/data-structures/dialog';
 import actions from './actions';
 import mutations from './mutations';
 import getters from './getters';

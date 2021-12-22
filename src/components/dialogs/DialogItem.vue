@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { IDialog, IMessage } from '@/data-structures/request'
+import { IDialog, IMessage } from '@/data-structures/dialog'
 import { IUser } from '@/data-structures/user';
 import { defineComponent, PropType } from 'vue'
 import { mapGetters } from 'vuex';
@@ -42,7 +42,7 @@ export default defineComponent({
       return this.notMe.firstName + ' ' + this.notMe.lastName;
     },
     notMe(): IUser {
-      return this.dialog.user1.UID === this.activeUser.UID 
+      return this.dialog.user1.UID === this.activeUser.UID
         ? this.dialog.user2
         : this.dialog.user1;
     },

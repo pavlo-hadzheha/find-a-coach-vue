@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import 'element-plus/dist/index.css';
 import '@/assets/tailwind.css';
-import {Message, Refresh, User, UserFilled} from '@element-plus/icons-vue';
+import {Message, Refresh, UserFilled} from '@element-plus/icons-vue';
 
 import {
   ElButton,

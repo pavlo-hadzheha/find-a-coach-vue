@@ -1,4 +1,4 @@
-import {IDialog, IMessage, MessageStore} from "@/data-structures/request";
+import {IDialog, IMessage, MessageStore} from "@/data-structures/dialog";
 
 function groupBy<T>(arr: T[], key: keyof T): T[][] {
   const uniqueValues = new Set(arr.map(e => e[key]));

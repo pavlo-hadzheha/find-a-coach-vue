@@ -1,4 +1,4 @@
-import {DialogMeta} from '../request';
+import {DialogMeta} from '../dialog';
 import CoachData from './coach-data.interface';
 
 export interface IUser {

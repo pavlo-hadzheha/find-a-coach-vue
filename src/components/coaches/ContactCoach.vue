@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { IMessage } from '@/data-structures/request';
+import { IMessage } from '@/data-structures/dialog';
 import { IUser } from '@/data-structures/user';
 import { ElMessage } from 'element-plus';
 import { defineComponent } from 'vue'

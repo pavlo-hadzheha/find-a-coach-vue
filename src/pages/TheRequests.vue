@@ -9,8 +9,8 @@
 import { ElLoading } from 'element-plus'
 import { defineComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
-import DialogList from '@/components/requests/DialogList.vue';
-import { IDialog } from '@/data-structures/request';
+import DialogList from '@/components/dialogs/DialogList.vue';
+import { IDialog } from '@/data-structures/dialog';
 
 export default defineComponent({
   components: { DialogList },
@@ -22,7 +22,7 @@ export default defineComponent({
   methods: {
     ... mapActions({getDialogs: 'messages/getDialogs'}),
   },
-  
+
   async mounted(): Promise<void> {
     const loadingInstance = ElLoading.service({target: '#dialogs'});
     this.dialogs = await this.getDialogs()

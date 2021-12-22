@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { IMessage } from '@/data-structures/request'
+import { IMessage } from '@/data-structures/dialog'
 import { IUser } from '@/data-structures/user';
 import { defineComponent, PropType } from 'vue'
 
