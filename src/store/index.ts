@@ -1,13 +1,4 @@
-import { createStore } from 'vuex'
-import AuthModule from './AuthModule';
-import MessageModule from './MessageModule';
-import UserModule from './UserModule';
-
-
-export default createStore({
-  modules: {
-    auth: AuthModule,
-    messages: MessageModule,
-    users: UserModule
-  }
-});
+export * from './create-store'
+export * from '@/views/auth/auth.store'
+export * from './modules/user.store'
+export * from './modules/dialog.store'

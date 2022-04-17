@@ -1,18 +1,20 @@
 module.exports = {
-  purge: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false,
+  content: [
+    './public/index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}'
+  ],
   theme: {
     screens: {
-      'sm': '576px',
-      'md': '768px',
-      'lg': '992px',
-      'xl': '1200px',
+      sm: '576px',
+      md: '768px',
+      lg: '992px',
+      xl: '1200px',
       '2xl': '1400px'
     },
     extend: {
       width: {
-        '128': '32rem'
+        128: '42rem'
       }
     }
-  },
+  }
 }

@@ -1,73 +1,43 @@
+import '@/assets/tailwind.css'
+import 'element-plus/dist/index.css'
+
+import '@/core/utils/global-prototype.utils'
+
 import { createApp } from 'vue'
-import 'element-plus/dist/index.css';
-import '@/assets/tailwind.css';
-import {Message, Refresh, UserFilled} from '@element-plus/icons-vue';
+import App from '@/App.vue'
 
-import {
-  ElButton,
-  ElForm,
-  ElFormItem,
-  ElInput,
-  ElInputNumber,
-  ElCheckbox,
-  ElCheckboxGroup,
-  ElRow,
-  ElCol,
-  ElSelect,
-  ElOption,
-  ElCard,
-  ElIcon,
-  ElTag,
-  ElCheckboxButton,
-  ElDialog,
-} from 'element-plus';
+import { router } from '@/router'
+import { store } from '@/store'
 
-import TheHeader from '@/components/layout/TheHeader.vue';
-import { TheAuth, TheRequests, TheCoaches } from '@/pages'
-import { BaseContainer} from '@/components/UI';
+import { VueGlobalPrototypesPlugin, PortalPlugin } from '@/plugins'
 
-import App from '@/App.vue';
-import router from '@/router';
-import store from '@/store';
+import { Message, Refresh, UserFilled } from '@element-plus/icons-vue'
 
-const app = createApp(App);
+import { BaseContainer } from '@/components/UI'
+import { ElLoading } from 'element-plus'
+import '@/assets/styles/main.scss'
+
+const app = createApp(App)
 
 // BuildUpons
-app.use(store);
-app.use(router);
+app.use(store)
+app.use(router)
 
-// ElementPlus
-app.use(ElButton);
-app.use(ElInput);
-app.use(ElForm);
-app.use(ElFormItem);
-app.use(ElInput);
-app.use(ElInputNumber);
-app.use(ElCheckbox);
-app.use(ElCheckboxGroup);
+app.use(PortalPlugin)
+app.use(VueGlobalPrototypesPlugin)
+app.use(ElLoading)
 
-app.use(ElRow);
-app.use(ElCol);
-app.use(ElSelect);
-app.use(ElOption);
-app.use(ElIcon);
-app.use(ElCard);
-app.use(ElTag);
-app.use(ElCheckboxButton);
-app.component('message-icon', Message);
-app.component('user-icon', UserFilled);
-app.component('refresh-icon', Refresh);
+app.component('MessageIcon', Message)
+app.component('UserIcon', UserFilled)
+app.component('RefreshIcon', Refresh)
 
-app.use(ElDialog);
-
+// app.use(ElDialog)
 
 // UI
-app.component('base-container', BaseContainer);
+app.component('BaseContainer', BaseContainer)
 
-// TheComponents
-app.component('the-header', TheHeader);
-app.component('the-coaches', TheCoaches);
-app.component('the-requests', TheRequests);
-app.component('the-auth', TheAuth);
+router.isReady().then(() => {
+  app.mount('#app')
+})
 
-app.mount('#app');
+export { app }
